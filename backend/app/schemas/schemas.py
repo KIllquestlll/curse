@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List
 
 class UserCreate(BaseModel):
-    email: str
+    name:str
     password: str
     role: str
 
@@ -17,5 +17,6 @@ class QuestionCreate(BaseModel):
 class TestOut(BaseModel):
     id: int
     title: str
+
     class Config:
         orm_mode = True

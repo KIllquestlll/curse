@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+header a {
+  text-decoration: none;
+  color: #333;
+}
+
+header .site-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0077ff;
+}
+
+header .buttons a {
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+}
+
+header .buttons .register {
+  background: #0077ff;
+  color: white;
+}
+
+header .buttons .register:hover {
+  background: #0063d6;
+}
+
+header .buttons .login {
+  background: #e0e0e0;
+  color: #333;
+}
+
+header .buttons .login:hover {
+  background: #d0d0d0;
+}
+
+/* Home Page */
+.home-container {
+  padding: 30px;
+}
+
+.tests-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.test-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.test-card h3 {
+  margin-top: 0;
+  color: #0077ff;
+}
+
+.test-card p {
+  margin: 10px 0;
+  color: #555;
+}
+
+.test-card a {
+  display: inline-block;
+  background: #0077ff;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.test-card a:hover {
+  background: #005fd1;
+}
+
+/* Form Pages */
+.form-page {
+  max-width: 400px;
+  margin: 50px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-page h2 {
+  text-align: center;
+  color: #0077ff;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+form button {
+  padding: 10px;
+  background: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: #005fd1;
+}
