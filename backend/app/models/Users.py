@@ -1,15 +1,16 @@
-from sqlalchemy import Column,String,Integer,ForeignKey
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
-from database import Base
-
-
+from database.database import Base
+from passlib.hash import bcrypt
 
 class User(Base):
     __tablename__ = 'users'
 
-    name = Column(String,nullable=False,unique=True)
-    id = Column(Integer,primary_key=True,index=True)
-    password = Column(String,unique=True,nullable=False)
-    role = Column(String,nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False, unique=True)
+    email = Column(String, unique=True, index=True)
+    hashed_password = Column(String, nullable=False)
+    role = Column(String, nullable=False)
 
-    result = relationship('Result',back_populates='user')
+    def verify_password(self, password: str):
+        return bcrypt.verify(password, self.hashed_password)

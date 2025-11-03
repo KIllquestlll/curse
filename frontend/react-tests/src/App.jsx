@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import TestPage from "./pages/TestPage";
+import Profile from "./pages/Profile"; // 👈 добавлено
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/test/:id" element={<TestPage />} />
+        <Route path="/profile" element={<Profile />} /> {/* 👈 добавлено */}
       </Routes>
     </Router>
   );

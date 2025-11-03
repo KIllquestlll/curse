@@ -132,3 +132,56 @@ form button {
 form button:hover {
   background: #005fd1;
 }
+
+/* Profile Page */
+.profile-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  object-fit: cover;
+  border: 3px solid #0077ff;
+}
+
+.profile-email {
+  color: #666;
+  font-size: 14px;
+}
+
+.profile-about {
+  margin: 15px 0;
+  color: #444;
+  font-size: 15px;
+}
+
+.profile-edit {
+  background: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.profile-edit:hover {
+  background: #005fd1;
+}
