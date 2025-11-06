@@ -1,19 +1,32 @@
 from pydantic import BaseModel,EmailStr
 
+class UserCreate(BaseModel):
 
-class _UserBase(BaseModel):
-    email:str
+    first_name:str
+    last_name:str
+    group:str
+    password:str
+
+class UserOut(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    group: str
+
+    model_config = {
+        'from_attributes':True
+    }
 
 
-class UserCreate(_UserBase):
-    hashed_password:str
+class UserLogin(BaseModel):
+    first_name:str
+    last_name:str
+    password:str
+    
 
-    class Config:
-        orm_mode = True
+class LoginResponse(BaseModel):
+    message:str
+    token:str
+    user:UserOut
 
-
-class User(_UserBase):
-    id:int
-
-    class Config:
-        orm_mode = True
+    

@@ -1,22 +1,29 @@
-export default function Profile() {
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-  const user = {
-    name: "Егор Шевкинов",
-    email: "example@gmail.com",
-    about: "Люблю создавать проекты на React и изучать программирование.",
-    avatar:
-      "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", // временный аватар
-      
-  };
+export default function Profile() {
+  const API_URL = 'https://jsonplaceholder.typicode.com/users';
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios.get(API_URL)
+      .then(res => {
+        setUser(res.data[1]);
+      })
+      .catch(err => console.error('Ошибка загрузки:', err));
+  },);
 
   return (
     <div className="profile-page">
       <div className="profile-card">
-        <img src={user.avatar} alt="avatar" className="profile-avatar" />
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+          alt="avatar"
+          className="profile-avatar"
+        />
         <h2>{user.name}</h2>
         <p className="profile-email">{user.email}</p>
-        <p className="profile-about">{user.about}</p>
-        <button className="profile-edit">Редактировать профиль</button>
+        <p className="profile-about">Люблю создавать проекты на React и изучать программирование.</p>
       </div>
     </div>
   );
