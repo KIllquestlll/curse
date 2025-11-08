@@ -1,3 +1,4 @@
+from fastapi import Depends,HTTPException,status
 from sqlalchemy.orm import Session
 from models.Users import *
 import bcrypt
@@ -38,3 +39,4 @@ def authenticate_user(db:Session, first_name:str,last_name:str,password:str):
     
     if bcrypt.checkpw(password.encode('utf-8'),user.hashed_password.encode('utf-8')):
         return user
+

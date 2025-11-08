@@ -11,10 +11,11 @@ export default function Profile() {
         setUser(res.data[1]);
       })
       .catch(err => console.error('Ошибка загрузки:', err));
-  },);
+  },[]);
 
-  return (
-    <div className="profile-page">
+return (
+  <div className="profile-page">
+    {user ? (
       <div className="profile-card">
         <img
           src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
@@ -25,6 +26,8 @@ export default function Profile() {
         <p className="profile-email">{user.email}</p>
         <p className="profile-about">Люблю создавать проекты на React и изучать программирование.</p>
       </div>
-    </div>
-  );
-}
+    ) : (
+      <p>Загрузка...</p>
+    )}
+  </div>
+);}
