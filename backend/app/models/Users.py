@@ -10,4 +10,5 @@ class Users(Base):
     first_name = Column(String,index=True)
     last_name = Column(String,index=True)
     group = Column(String)
+    role = Column(String,default='student')
     hashed_password = Column(String)
