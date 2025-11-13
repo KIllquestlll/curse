@@ -52,6 +52,14 @@ header .buttons .login:hover {
   background: #d0d0d0;
 }
 
+header .buttons .exit {
+    background-color: #e0e0e0;
+}
+
+header .buttons .exit:hover {
+    background-color:#d0d0d0
+}
+
 /* Home Page */
 .home-container {
   padding: 30px;
@@ -136,6 +144,7 @@ form button:hover {
 /* Profile Page */
 .profile-page {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 50px 20px;
@@ -151,6 +160,24 @@ form button:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.profile-actions{
+  margin-top: 45px;
+}
+.admin-button{
+  background-color:#0077ff;
+  color: #ffffff;
+  text-decoration: none;
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+}
+
+.admin-button:hover{
+  background-color: #0063d6;
+}
+
 .profile-avatar {
   width: 120px;
   height: 120px;
@@ -160,8 +187,9 @@ form button:hover {
   border: 3px solid #0077ff;
 }
 
+
 .profile-email {
-  color: #666;
+  color: #525252;
   font-size: 14px;
 }
 
@@ -217,6 +245,15 @@ form button:hover {
   box-sizing: border-box;
   font-size: 14px;
 }
+.register-form select{
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
 
 .register-form button {
   width: 100%;
@@ -255,6 +292,16 @@ form button:hover {
   color: #555;
 }
 
+.login-form select{
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
 .login-form input {
   width: 100%;
   padding: 8px 10px;
@@ -279,16 +326,4 @@ form button:hover {
 
 .login-form button:hover {
   background-color: #1565c0;
-}
-.logout{
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  font-weight: bold;
-  background: #e0e0e0;
-  color: #333;
-  cursor: pointer;
-}
-.logout:hover{
-  background-color: #d0d0d0;
 }

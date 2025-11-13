@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../index.css"; 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
 export default function RegisterForm() {
+  const [groups,setGroups] = useState([]);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    group: "",
+    group_id: "",
     password: ""
   });
+
+
+useEffect(() =>{
+  axios.get('http://127.0.0.1:8000/groups/api')
+  .then(res => setGroups(res.data))
+  .catch(err => console.error('Error loading',err));
+},[]);
 
 const navigate = useNavigate();
 
@@ -25,8 +33,9 @@ const navigate = useNavigate();
       const res = await axios.post('http://127.0.0.1:8000/users/api/register',formData);
 
       alert(res.data.message || 'Register win')
-
-      localStorage.setItem('user',formData.first_name)
+      group_i:parseInt(formData.group_id)
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      localStorage.setItem('token',res.data.token)
 
       navigate('/profile')
     }catch(err){
@@ -63,12 +72,19 @@ const navigate = useNavigate();
 
       <label>
         Группа:
-        <input
-          type="text"
-          name="group"
-          value={formData.group}
-          onChange={handleChange}
-        />
+        <select
+        name='group_id'
+        value={formData.group_id}
+        onChange={handleChange}
+        required
+        >
+          <option value="">Выбери группу</option>
+          {groups.map(group =>(
+            <option key={group.id} value={group.id}>
+              {group.name}
+              </option>
+          ))}
+        </select>
       </label>
 
       <label>

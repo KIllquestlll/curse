@@ -6,14 +6,18 @@ class UserCreate(BaseModel):
 
     first_name:str
     last_name:str
-    group:str
+    group_id:int
     password:str
+
+    model_config = {
+        "from_attributes": True
+    }
 
 class UserOut(BaseModel):
     id: int
     first_name: str
     last_name: str
-    group: str
+    group_id: int
     role: str | None = None
 
     model_config = {

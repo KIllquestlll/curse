@@ -1,13 +1,37 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function Header() {
-  const user = localStorage.getItem("user");
+  const [user, setUser] = useState(null); 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); 
+    }
+  }, []);
+
   const handleLogout = () => {
-    localStorage.removeItem("user"); 
+    localStorage.removeItem("user");
+    setUser(null); 
     navigate("/");
   };
+
+  useEffect(() => {
+  const loadUser = () => {
+    const storedUser = localStorage.getItem("user");
+    setUser(storedUser ? JSON.parse(storedUser) : null);
+  };
+  
+  loadUser();
+
+  window.addEventListener("storage", loadUser);
+
+  return () => {
+    window.removeEventListener("storage", loadUser);
+  };
+}, []);
 
   return (
     <header>
@@ -20,7 +44,10 @@ export default function Header() {
           </>
         )}
         {user && (
-          <button onClick={handleLogout} className="logout">Выход</button>
+          <>
+          <Link to="/loginout" className="exit" onClick={handleLogout}>Выход</Link>
+          <Link to="/profile" className="login">профиль</Link>
+          </>
         )}
       </div>
     </header>

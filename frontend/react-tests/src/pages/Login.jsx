@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../index.css";
+
 
 export default function LoginForm() {
   const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    group: "",
+    group_id: "",
     password: ""
   });
+
   const [error, setError] = useState(""); 
+  const [groups, setGroups] = useState([])
+
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/groups/api")
+    .then(res => setGroups(res.data))
+    .catch(err => console.error('error',err))
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +40,7 @@ export default function LoginForm() {
 
       localStorage.setItem("token", response.data.token); 
       localStorage.setItem("user", JSON.stringify(response.data.user)); 
+      window.dispatchEvent(new Event("storage"));
 
       navigate("/profile");
     } catch (err) {
@@ -67,13 +77,19 @@ export default function LoginForm() {
 
       <label>
         Группа:
-        <input
-          type="text"
-          name="group"
-          value={formData.group}
+        <select
+          name="group_id"
+          value={formData.group_id}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Выберите группу</option>
+          {groups.map(group => (
+            <option key={group.id} value={group.id}>
+              {group.name}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label>
