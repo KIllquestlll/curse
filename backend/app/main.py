@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from models.Users import *
 from routes.route_auth import *
+from routes.route_test import *
 from routes.GroupList import *
 from database.database import engine
 from sqlalchemy.orm import Session
@@ -15,6 +16,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(route_auth)
 app.include_router(router_group)
+app.include_router(router_test)
 
 app.add_middleware(
     CORSMiddleware,

@@ -21,10 +21,6 @@ export default function AdminPanel() {
     if (StoredUser) setUserRole(StoredUser.role)
   },[]);
 
-  if (UserRole && UserRole !== 'admin'){
-    return <Navigate to='/' replace/>;
-  }
-
     useEffect(() => {
     axios
       .get(API_URL, {
@@ -41,24 +37,38 @@ export default function AdminPanel() {
       .catch((err) => console.error(err));
   }, []);
 
+const handleRoleChange = async (userId, newRole) => {
+  try {
+    await axios.patch(
+      `${API_URL}/${userId}/role`,
+      { role: newRole },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
 
-  const handleRoleChange = async (userId, newRole) => {
-    try {
-      await axios.patch(`${API_URL}/${userId}/role`, { role: newRole });
-      setUsers((prev) =>
-        prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
-      );
-    } catch (err) {
-      console.error(err);
-      alert("Ошибка при смене роли");
-    }
-  };
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+    );
+
+
+    console.log("Пользователь, чей id отправляем:", userId, typeof userId);
+
+  } catch (err) {
+    console.error(err);
+    alert("Ошибка при смене роли");
+  }
+};
 
   const filteredUsers = users.filter(
     (u) =>
       (filterRole === "all" || u.role === filterRole) &&
-      (filterGroup === "all" || u.group === filterGroup)
+      (filterGroup === "all" || u.group.name === filterGroup)
   );
+
+    if (UserRole && UserRole !== 'admin'){
+      return <Navigate to='/' replace/>;
+  }
 
   return (
     <div className="admin-panel">
@@ -95,7 +105,7 @@ export default function AdminPanel() {
           <div key={user.id} className="user-card">
             <div className="user-info-block">
             <h2 className="user-name">{user.first_name} {user.last_name}</h2>
-            <p className="user-info">Группа: {user.group_id}</p>
+            <p className="user-info">Группа: {user.group.name}</p>
         </div>
 
         <div className="user-role">

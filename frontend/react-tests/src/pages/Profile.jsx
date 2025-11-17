@@ -10,7 +10,9 @@ export default function Profile() {
 
 useEffect(() => {
   const token = localStorage.getItem('token');
+  console.log(token)
   if (!token) return;
+  
   axios.get(API_URL, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -30,17 +32,24 @@ return (
             className="profile-avatar"
           />
           <h2>{user.first_name} {user.last_name}</h2>
-          <p className="profile-group">{user.group_id}</p>
+          <p className="profile-group">{user.group.name}</p>
           <p className="profile-role">{user.role}</p>   
         </div>     
       ) : (
         
         <p>Загрузка...</p>
       )}
-      {user && user.role === 'admin' && (
+      {user && user.role === 'admin'  && (
         <div className="profile-actions">
             <Link to="/admin" className="admin-button">
               Админ панель
+            </Link>
+        </div>
+      )}
+      {user && user.role === 'teacher' && (
+        <div className="profile-actions">
+            <Link to="/create" className="admin-button">
+              Создать тест
             </Link>
         </div>
       )}

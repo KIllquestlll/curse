@@ -1,4 +1,5 @@
 from pydantic import BaseModel,EmailStr
+from typing import Optional
 from enum import Enum
 
 
@@ -13,11 +14,20 @@ class UserCreate(BaseModel):
         "from_attributes": True
     }
 
+class GroupOut(BaseModel):
+    id: int
+    name: str
+
+    model_config = {
+        "from_attributes": True
+    }
+
+
 class UserOut(BaseModel):
     id: int
     first_name: str
     last_name: str
-    group_id: int
+    group: Optional[GroupOut] = None
     role: str | None = None
 
     model_config = {

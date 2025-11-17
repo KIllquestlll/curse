@@ -1,40 +1,25 @@
-from fastapi import Depends,HTTPException,status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import Header, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from jose import jwt, JWTError
+from database.database import get_db
 from models.Users import Users
-from database.database import SessionLocal
-from core.security import SECRET_KEY,ALGORITHM
-from jose import jwt,JWTError
+from core.security import SECRET_KEY, ALGORITHM
 
+def get_current_user(authorization: str = Header(None), db: Session = Depends(get_db)):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No token or invalid format")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/api/login")
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No token provided")
-    
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+    token = authorization.split(" ")[1]
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("sub")
         if user_id is None:
-            raise credentials_exception
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
     except JWTError:
-        raise credentials_exception
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
     user = db.query(Users).filter(Users.id == int(user_id)).first()
-    if user is None:
-        raise credentials_exception
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
 
     return user

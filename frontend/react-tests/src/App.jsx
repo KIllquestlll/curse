@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import TestPage from "./pages/TestPage";
 import Profile from "./pages/Profile"; 
 import AdminPanel from "./pages/AdminPanel";
+import CreateTest from "./pages/CreateTest";
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/test/:id" element={<TestPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path='/admin' element={<AdminPanel/>}></Route>
+        <Route path="/create" element={<CreateTest/>}></Route>
       </Routes>
     </Router>
   );
