@@ -9,13 +9,18 @@ class AnswerCreate(BaseModel):
 
 class QuestionCreate(BaseModel):
     text:str
-    answer:List[AnswerCreate]
-
+    answers:List[AnswerCreate]
 
 class TestCreate(BaseModel):
     title:str
     group_id:int
     questions:List[QuestionCreate]
+
+class TestSummary(BaseModel):
+    test_title:str
+    group_name:str
+
+    model_config = {'from_attributes':True}
 
 class AnswerRead(BaseModel):
     text: str

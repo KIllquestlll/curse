@@ -12,6 +12,6 @@ class Test(Base):
     group_id = Column(Integer,ForeignKey('groups.id'))
 
 
-    questions = relationship('Question',back_populates='test',cascade='all,delete')
+    questions = relationship('Question',back_populates='test',cascade='all,delete',passive_deletes=True)
 
     

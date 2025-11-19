@@ -44,6 +44,9 @@ return (
             <Link to="/admin" className="admin-button">
               Админ панель
             </Link>
+            <Link to="/create" className="admin-button">
+              Создать тест
+            </Link>
         </div>
       )}
       {user && user.role === 'teacher' && (

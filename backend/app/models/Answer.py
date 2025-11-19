@@ -10,4 +10,6 @@ class Answer(Base):
     text = Column(String, nullable=False)
     is_correct = Column(Boolean, default=False)
 
+
+    question_id = Column(Integer, ForeignKey("questions.id"))
     question = relationship("Question", back_populates="answers")

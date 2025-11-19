@@ -1,25 +1,37 @@
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 export default function Home() {
-  const tests = [
-    { id: 1, title: "Тест по истории", description: "Проверь свои знания по истории." },
-    { id: 2, title: "Тест по биологии", description: "Проверь знания по биологии." },
-    { id: 3, title: "Тест по географии", description: "Проверь знания о странах и столицах." },
-    { id: 4, title: "Тест по информатике", description: "Основы алгоритмов и программирования." },
-    { id: 5, title: "Тест по физике", description: "Проверь основы механики и термодинамики." },
-    { id: 6, title: "Тест по литературе", description: "Классические произведения и авторы." },
-  ];
+
+    const [tests,SetTests] = useState([]);
+    const [loading,SetLoading] = useState(true);
+    const [error, SetError] = useState('');
+
+
+    const API_URL = 'http://127.0.0.1:8000/tests/api/tests/summary'
+
+    useEffect(() => {
+      axios.get(API_URL)
+      .then(res => {
+        SetTests(res.data);
+        SetLoading(false);
+      })
+      .catch(err => {
+        SetError('Error');
+        SetLoading(false)
+      });
+    },[]);
 
   return (
     <div className="home-container">
       <h2>Выбери тест:</h2>
       <div className="tests-grid">
-        {tests.map((test) => (
-          <div key={test.id} className="test-card">
-            <h3>{test.title}</h3>
-            <p>{test.description}</p>
-            <Link to={`/test/${test.id}`}>Перейти</Link>
+        {tests.map((t,indedx) => (
+          <div key={t.id} className="test-card">
+            <h3>{t.test_title}</h3>
+            <p>{t.group_name}</p>
+            <Link to={`/test/${t.id}`}>Перейти</Link>
           </div>
         ))}
       </div>

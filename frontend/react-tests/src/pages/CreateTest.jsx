@@ -1,24 +1,63 @@
-import { useState, useEffect } from "react"; // Добавьте useEffect
+import { useState, useEffect } from "react";
 import axios from "axios";
-import '../styles/CreateTest.css'
+import "../styles/CreateTest.css";
 
 export default function CreateTest() {
   const [title, setTitle] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
-  const API_GROUP_URL = 'http://127.0.0.1:8000/groups/api'
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const API_GROUP_URL = "http://127.0.0.1:8000/groups/api";
+  const API_TEST_URL = "http://127.0.0.1:8000/tests/api/test";
 
   const [questions, setQuestions] = useState([
     {
       text: "",
       answers: ["", "", "", ""],
-      correctIndex: 0
-    }
+      correctIndex: 0,
+    },
   ]);
 
-  // Загрузка групп с бекенда
+  // Создать тест
+  const createTest = async () => {
+    if (!title.trim()) {
+      alert("Введите название теста");
+      return;
+    }
+
+    if (!selectedGroup) {
+      alert("Выберите группу");
+      return;
+    }
+
+    const payload = {
+      title,
+      group_id: Number(selectedGroup),
+      questions: questions.map((q) => ({
+        text: q.text,
+        answers: q.answers.map((a, i) => ({
+          text: a,
+          is_correct: i === q.correctIndex,
+        })),
+      })),
+    };
+
+    try {
+      const res = await axios.post(API_TEST_URL, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("Ответ сервера:", res.data);
+      alert("Тест успешно создан!");
+    } catch (err) {
+      console.error("Ошибка при создании теста:", err);
+      alert("Не удалось создать тест");
+    }
+  };
+
+  // Загрузка групп
   useEffect(() => {
     setLoading(true);
     axios
@@ -36,82 +75,55 @@ export default function CreateTest() {
       });
   }, []);
 
+  // Добавить вопрос
   const addQuestion = () => {
     setQuestions([
       ...questions,
-      { text: "", answers: ["", "", "", ""], correctIndex: 0 }
+      { text: "", answers: ["", "", "", ""], correctIndex: 0 },
     ]);
   };
 
+  // Обновить вопрос
   const updateQuestion = (index, field, value) => {
     const updated = [...questions];
     updated[index][field] = value;
     setQuestions(updated);
   };
 
+  // Обновить ответ
   const updateAnswer = (qIndex, aIndex, value) => {
     const updated = [...questions];
     updated[qIndex].answers[aIndex] = value;
     setQuestions(updated);
   };
 
-  // Удаление вопроса
+  // Удалить вопрос
   const removeQuestion = (index) => {
     if (questions.length > 1) {
       setQuestions(questions.filter((_, i) => i !== index));
     }
   };
 
-  const createTest = () => {
-    // Валидация
-    if (!title.trim()) {
-      alert("Введите название теста");
-      return;
-    }
-
-    if (!selectedGroup) {
-      alert("Выберите группу");
-      return;
-    }
-
-    const payload = {
-      title,
-      group_id: selectedGroup,
-      questions: questions.map((q) => ({
-        text: q.text,
-        answers: q.answers.map((a, i) => ({
-          text: a,
-          is_correct: i === q.correctIndex
-        }))
-      }))
-    };
-
-    console.log("Созданный тест:", payload);
-    alert("Тест сформирован (проверь консоль)");
-  };
-
+  // Интерфейс
   return (
     <div className="ct-container">
       <h1 className="ct-title">Создать тест</h1>
 
-      {/* Сообщение об ошибке */}
-      {error && (
-        <div className="ct-error">
-          {error}
-        </div>
-      )}
+      {error && <div className="ct-error">{error}</div>}
 
+      {/* Название теста */}
       <div className="ct-block">
         <label className="ct-label">Название теста</label>
         <input
           type="text"
-          placeholder="Например: Тест по химии №1"
+          placeholder="Название теста"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="ct-input"
         />
       </div>
 
+      {/* Выбор группы */}
       <div className="ct-block">
         <label className="ct-label">Группа</label>
         {loading ? (
@@ -123,8 +135,8 @@ export default function CreateTest() {
             className="ct-input"
           >
             <option value="">Выберите группу</option>
-            {groups.map((group) => ( // Исправлено: group вместо g
-              <option key={group.id} value={group.id}> {/* Исправлено: group.id и group.name */}
+            {groups.map((group) => (
+              <option key={group.id} value={group.id}>
                 {group.name}
               </option>
             ))}
@@ -132,14 +144,16 @@ export default function CreateTest() {
         )}
       </div>
 
+      {/* Блок вопросов */}
       <h2 className="ct-subtitle">Вопросы</h2>
 
       {questions.map((q, qIndex) => (
         <div key={qIndex} className="ct-question">
           <div className="ct-question-header">
             <h3 className="ct-question-title">Вопрос {qIndex + 1}</h3>
+
             {questions.length > 1 && (
-              <button 
+              <button
                 onClick={() => removeQuestion(qIndex)}
                 className="ct-remove-btn"
                 type="button"
@@ -164,11 +178,10 @@ export default function CreateTest() {
                   type="text"
                   placeholder={`Вариант ${aIndex + 1}`}
                   value={a}
-                  onChange={(e) =>
-                    updateAnswer(qIndex, aIndex, e.target.value)
-                  }
+                  onChange={(e) => updateAnswer(qIndex, aIndex, e.target.value)}
                   className="ct-input flex"
                 />
+
                 <label className="ct-radio-label">
                   <input
                     type="radio"
