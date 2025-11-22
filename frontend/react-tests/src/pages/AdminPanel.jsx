@@ -12,16 +12,16 @@ export default function AdminPanel() {
 
   const API_URL = "http://127.0.0.1:8000/users/api/users"; 
   const GROUP_URL = 'http://127.0.0.1:8000/groups/api'
+  const API_DELETED_USERS_URL = 'http://127.0.0.1:8000/users/api/delete'
 
   const token = localStorage.getItem("token");
 
-  
   useEffect(() => {
     const StoredUser = JSON.parse(localStorage.getItem('user'));
     if (StoredUser) setUserRole(StoredUser.role)
   },[]);
 
-    useEffect(() => {
+  useEffect(() => {
     axios
       .get(API_URL, {
         headers: { Authorization: `Bearer ${token}` }
@@ -32,31 +32,48 @@ export default function AdminPanel() {
 
   useEffect(() => {
     axios
-      .get( GROUP_URL)
+      .get(GROUP_URL)
       .then((res) => setGroups(res.data))
       .catch((err) => console.error(err));
   }, []);
 
-const handleRoleChange = async (userId, newRole) => {
+  if (UserRole && UserRole !== 'admin'){
+    return <Navigate to='/' replace/>;
+  }
+
+  const handleRoleChange = async (userId, newRole) => {
+    try {
+      await axios.patch(
+        `${API_URL}/${userId}/role`,
+        { role: newRole },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+      );
+
+    } catch (err) {
+      console.error(err);
+      alert("Ошибка при смене роли");
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+  if (!window.confirm("Вы точно хотите удалить этого пользователя? Это действие необратимо.")) return;
+
   try {
-    await axios.patch(
-      `${API_URL}/${userId}/role`,
-      { role: newRole },
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    );
+    await axios.delete(`${API_DELETED_USERS_URL}/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-    setUsers((prev) =>
-      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
-    );
-
-
-    console.log("Пользователь, чей id отправляем:", userId, typeof userId);
-
+    // Убираем пользователя из состояния
+    setUsers((prev) => prev.filter((u) => u.id !== userId));
   } catch (err) {
     console.error(err);
-    alert("Ошибка при смене роли");
+    alert("Ошибка при удалении пользователя");
   }
 };
 
@@ -65,10 +82,6 @@ const handleRoleChange = async (userId, newRole) => {
       (filterRole === "all" || u.role === filterRole) &&
       (filterGroup === "all" || u.group.name === filterGroup)
   );
-
-    if (UserRole && UserRole !== 'admin'){
-      return <Navigate to='/' replace/>;
-  }
 
   return (
     <div className="admin-panel">
@@ -95,7 +108,7 @@ const handleRoleChange = async (userId, newRole) => {
           {groups.map((group) => (
             <option key={group.id} value={group.name}>
               {group.name}
-             </option>
+            </option>
           ))}
         </select>
       </div>
@@ -104,24 +117,30 @@ const handleRoleChange = async (userId, newRole) => {
         {filteredUsers.map((user) => (
           <div key={user.id} className="user-card">
             <div className="user-info-block">
-            <h2 className="user-name">{user.first_name} {user.last_name}</h2>
-            <p className="user-info">Группа: {user.group.name}</p>
-        </div>
+              <h2 className="user-name">{user.first_name} {user.last_name}</h2>
+              <p className="user-info">Группа: {user.group.name}</p>
+            </div>
 
-        <div className="user-role">
-            <span className="role-label">Роль: {user.role}</span>
-            <select
+            <div className="user-role">
+              <span className="role-label">Роль: {user.role}</span>
+              <select
                 className="role-select"
                 value={user.role}
                 onChange={(e) => handleRoleChange(user.id, e.target.value)}
-            >
+              >
                 <option value="student">Ученик</option>
                 <option value="teacher">Учитель</option>
                 <option value="admin">Админ</option>
-            </select>
-        </div>
-    </div>
+              </select>
 
+              <button
+              className="delete-user-btn"
+              onClick={() => handleDeleteUser(user.id)}
+            >
+              Удалить
+            </button>
+            </div>
+          </div>
         ))}
       </div>
     </div>

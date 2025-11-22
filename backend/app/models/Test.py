@@ -13,5 +13,7 @@ class Test(Base):
 
 
     questions = relationship('Question',back_populates='test',cascade='all,delete',passive_deletes=True)
+    results = relationship('TestResult',back_populates='test')
 
+    
     

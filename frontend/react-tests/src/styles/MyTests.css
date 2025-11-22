@@ -1,0 +1,124 @@
+/* Контейнер всей страницы */
+.tests-container {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Карточка теста */
+.test-card {
+  background: #ffffff;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+}
+
+.test-card:hover {
+  transform: scale(1.01);
+}
+
+h2 {
+  margin: 0 0 10px;
+}
+
+/* Селектор групп */
+.group-selector {
+  margin-bottom: 15px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+/* Таблица результатов */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.results-table th,
+.results-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.results-table tr:hover {
+  background-color: #f7f7f7;
+}
+
+/* Статусы */
+.loader {
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+}
+
+.error {
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+  color: red;
+  font-weight: bold;
+}
+.tests-container {
+  padding: 20px;
+}
+
+.test-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
+}
+
+.test-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* 🔥 красная кнопка удаления */
+.delete-test-btn {
+  background: #e53935;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.delete-test-btn:hover {
+  background: #c62828;
+}
+
+.group-selector {
+  margin-bottom: 15px;
+  padding: 6px 10px;
+  font-size: 15px;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th,
+.results-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}

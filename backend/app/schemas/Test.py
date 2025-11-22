@@ -17,6 +17,7 @@ class TestCreate(BaseModel):
     questions:List[QuestionCreate]
 
 class TestSummary(BaseModel):
+    id:int
     test_title:str
     group_name:str
 

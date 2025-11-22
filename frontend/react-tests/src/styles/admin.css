@@ -42,14 +42,14 @@
   gap: 15px;
 }
 
-/* Каждая карточка теперь похожа на строку */
+
 .user-card {
   background-color: #fff;
   border-radius: 10px;
   border: 1px solid #ddd;
   width: 90%;
   max-width: 800px;
-  padding: 5px 15px;
+  padding: 10px 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,7 +63,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
-/* Левая часть: имя и группа */
+
 .user-info-block {
   display: flex;
   flex-direction: column;
@@ -82,7 +82,7 @@
   color: #555;
 }
 
-/* Правая часть: роль и селектор */
+
 .user-role {
   display: flex;
   flex-direction: column;
@@ -108,3 +108,18 @@
   border-color: #666;
   background-color: #fff;
 }
+
+.delete-user-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-user-btn:hover {
+  background-color: #ff1f1f;
+}
+

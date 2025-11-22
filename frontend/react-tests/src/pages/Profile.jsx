@@ -22,6 +22,7 @@ useEffect(() => {
   .catch(err => console.error('Ошибка загрузки:', err));
 }, []);
 
+
 return (
     <div className="profile-page">
       {user ? (
@@ -47,12 +48,18 @@ return (
             <Link to="/create" className="admin-button">
               Создать тест
             </Link>
+            <Link to="/mytests" className="admin-button">
+              Мои тесты
+            </Link>
         </div>
       )}
       {user && user.role === 'teacher' && (
         <div className="profile-actions">
             <Link to="/create" className="admin-button">
               Создать тест
+            </Link>
+            <Link to="/mytests" className="admin-button">
+              Мои тесты
             </Link>
         </div>
       )}

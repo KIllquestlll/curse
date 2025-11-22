@@ -32,7 +32,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     if not new_user:
         raise HTTPException(status_code=400, detail='User already exist')
 
-    # ⬇️ Заново загрузим с группой
+    
     new_user = db.query(Users).options(joinedload(Users.group)).filter(Users.id == new_user.id).first()
 
     token = create_access_token(data={'sub': str(new_user.id)})
@@ -57,7 +57,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     if not authenticated_user:
         raise HTTPException(status_code=401, detail='Invalid credentials')
 
-    # ⬇️ Подгружаем группу
+   
     authenticated_user = db.query(Users).options(joinedload(Users.group)).filter(Users.id == authenticated_user.id).first()
 
     token = create_access_token(data={'sub': str(authenticated_user.id)})
@@ -67,6 +67,18 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         token=token,
         user=user_out
     )
+
+@route_auth.delete('/api/delete/{user_id}')
+def delete_user_by_id(user_id:int,db:Session = Depends(get_db)):
+    user = db.query(Users).filter(Users.id == user_id).first()
+
+    if not user: raise HTTPException(status_code=404,detail='User not found')
+
+    db.delete(user)
+    db.commit()
+
+    return {'status':'ok',
+            'message':f'{user} has been deleted'}
 
 
 @route_auth.get('/api/me', response_model=UserOut)

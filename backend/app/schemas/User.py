@@ -35,6 +35,7 @@ class UserOut(BaseModel):
     }
 
 
+
 class UserLogin(BaseModel):
     first_name:str
     last_name:str
