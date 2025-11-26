@@ -14,20 +14,20 @@ def create_user(db:Session, first_name:str,last_name:str,group_id:int,password:s
         Users.group_id == group_id
     ).first()
 
+    if existing_user:
+        return None
 
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(status_code=400, detail="Указанная группа не найдена")
-    
-    if existing_user:
-        return None
-    
+
     user = Users(
         first_name=first_name,
         last_name = last_name,
         group_id = group_id,
         hashed_password = hash_password(password)
     )
+    
     db.add(user)
     db.commit()
     db.refresh(user)

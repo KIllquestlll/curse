@@ -10,12 +10,15 @@ export default function RegisterForm() {
     first_name: "",
     last_name: "",
     group_id: "",
-    password: ""
+    password: "",
+    confirm_password:"",
   });
 
+  const API_POST_URL = 'http://127.0.0.1:8000/users/api/register'
+  const API_GET_URL = 'http://127.0.0.1:8000/groups/api'
 
 useEffect(() =>{
-  axios.get('http://127.0.0.1:8000/groups/api')
+  axios.get(API_GET_URL)
   .then(res => setGroups(res.data))
   .catch(err => console.error('Error loading',err));
 },[]);
@@ -29,8 +32,14 @@ const navigate = useNavigate();
 
   const handleSubmit =  async (e) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirm_password){
+      alert("The passwords don't match")
+      return;
+    }
+
     try{
-      const res = await axios.post('http://127.0.0.1:8000/users/api/register',formData);
+      const res = await axios.post(API_POST_URL,formData);
 
       alert(res.data.message || 'Register win')
       group_i:parseInt(formData.group_id)
@@ -94,6 +103,17 @@ const navigate = useNavigate();
           name="password"
           value={formData.password}
           onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
+        Повтор Пароля:
+        <input
+          type="password"
+          name="repeat_password"
+          value={formData.confirm_password}
+          onChange={e => setFormData({...formData, confirm_password: e.target.value})}
           required
         />
       </label>
